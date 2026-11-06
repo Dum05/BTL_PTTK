@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Đăng kí thành viên</title><link rel="stylesheet" href="/assets/shop.css"></head>
+<body>
+<header><div class="bar"><a href="/">QLST Điện máy</a><span>Khu vực khách hàng</span></div></header>
+<main class="narrow">
+<a class="back" href="/">← Trang chủ</a>
+<section class="card">
+<p class="eyebrow">Module 1</p><h1>Đăng kí thành viên</h1>
+<p class="message bad" role="alert" th:if="${error}" th:text="${error}"></p>
+<div th:if="${profile != null}">
+  <p class="message good" role="status">Đăng kí thành viên thành công.</p>
+  <dl>
+    <dt>Mã thành viên</dt><dd th:text="|TV-${profile.id()}|"></dd>
+    <dt>Họ và tên</dt><dd th:text="${profile.fullName()}"></dd>
+    <dt>Số điện thoại</dt><dd th:text="${profile.phone()}"></dd>
+    <dt>Email</dt><dd th:text="${profile.email()}"></dd>
+  </dl>
+</div>
+<form th:unless="${profile != null}" method="post" action="/member" class="stack">
+  <p>Điền đầy đủ thông tin để tạo hồ sơ thành viên.</p>
+  <input type="hidden" name="csrf" th:value="${session.csrf}">
+  <label>Họ và tên<input name="fullName" maxlength="120" th:value="${form?.get('fullName')}" required></label>
+  <div class="grid">
+    <label>Ngày sinh<input type="date" name="birthDate" th:value="${form?.get('birthDate')}" required></label>
+    <label>Số điện thoại<input name="phone" inputmode="numeric" pattern="0[0-9]{9}" maxlength="10" th:value="${form?.get('phone')}" required></label>
+  </div>
+  <label>Email<input type="email" name="email" maxlength="150" th:value="${form?.get('email')}" required></label>
+  <label>Địa chỉ<input name="address" maxlength="250" th:value="${form?.get('address')}" required></label>
+  <div class="actions"><button>Thêm</button><a class="button secondary" href="/">Hủy</a></div>
+</form>
+</section>
+</main>
+</body></html>

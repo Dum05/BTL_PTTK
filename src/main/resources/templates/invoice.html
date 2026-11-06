@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hóa đơn nhập hàng</title><link rel="stylesheet" href="/assets/shop.css"></head>
+<body>
+<header><div class="bar"><a href="/">QLST Điện máy</a><span>Khu vực nhân viên kho</span></div></header>
+<main>
+<p class="message good" role="status">Nhập hàng thành công.</p>
+<article class="card">
+  <p class="eyebrow" th:text="|PN-${invoice.id()}|"></p>
+  <h1>Hóa đơn nhập hàng</h1>
+  <dl>
+    <dt>Nhà cung cấp</dt><dd th:text="${invoice.supplier().name()}"></dd>
+    <dt>Nhân viên lập</dt><dd th:text="${invoice.employee()}"></dd>
+    <dt>Thời điểm nhập</dt><dd th:text="${date}"></dd>
+  </dl>
+  <div class="scroll"><table><thead><tr><th>Mã SKU</th><th>Mặt hàng</th><th class="num">Số lượng</th><th class="num">Đơn giá</th><th class="num">Thành tiền</th></tr></thead>
+  <tbody><tr th:each="row : ${invoice.lines()}">
+    <td th:text="${row.sku()}"></td><td th:text="${row.productName()}"></td><td class="num" th:text="${row.line().quantity()}"></td>
+    <td class="num" th:text="|${#numbers.formatInteger(row.line().unitPrice(), 1, 'POINT')} đ|"></td>
+    <td class="num" th:text="|${#numbers.formatInteger(row.line().amount(), 1, 'POINT')} đ|"></td>
+  </tr></tbody></table></div>
+  <p class="total">Tổng cộng <strong th:text="|${#numbers.formatInteger(invoice.total(), 1, 'POINT')} đ|"></strong></p>
+  <div class="actions"><button type="button" onclick="window.print()">In hóa đơn</button><a class="button secondary" href="/warehouse">Lập phiếu mới</a></div>
+</article>
+</main>
+</body></html>

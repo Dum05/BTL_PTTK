@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nhập hàng từ nhà cung cấp</title><link rel="stylesheet" href="/assets/shop.css">
+<script src="/assets/warehouse.js" defer></script></head>
+<body>
+<header><div class="bar"><a href="/">QLST Điện máy</a><span>Khu vực nhân viên kho</span></div></header>
+<main id="warehouse" th:data-csrf="${session.csrf}" th:data-key="${requestKey}">
+<a class="back" href="/">← Trang chủ</a>
+<p class="eyebrow">Module 2</p><h1>Nhập hàng từ nhà cung cấp</h1>
+<p class="message bad" id="error" role="alert" hidden></p>
+<div class="grid">
+<section class="card">
+  <h2>1. Chọn nhà cung cấp</h2>
+  <form class="inline" id="supplier-search"><label>Tìm theo tên<input name="name" maxlength="140" required></label><button>Tìm</button></form>
+  <div id="supplier-results" class="results" aria-live="polite"></div>
+  <details><summary>Thêm nhà cung cấp mới</summary>
+    <form class="stack" id="supplier-add">
+      <label>Tên nhà cung cấp<input name="name" maxlength="140" required></label>
+      <label>Số điện thoại<input name="phone" pattern="0[0-9]{9}" required></label>
+      <label>Địa chỉ<input name="address" maxlength="250" required></label>
+      <div><button>Thêm nhà cung cấp</button></div>
+    </form>
+  </details>
+  <p class="selection" id="supplier-selection" aria-live="polite">Chưa chọn nhà cung cấp</p>
+</section>
+<section class="card">
+  <h2>2. Chọn mặt hàng</h2>
+  <form class="inline" id="product-search"><label>Tìm theo tên<input name="name" maxlength="140" required></label><button>Tìm</button></form>
+  <div id="product-results" class="results" aria-live="polite"></div>
+  <details><summary>Thêm mặt hàng mới</summary>
+    <form class="stack" id="product-add">
+      <label>Mã SKU<input name="sku" maxlength="30" required></label>
+      <label>Tên mặt hàng<input name="name" maxlength="140" required></label>
+      <div><button>Thêm mặt hàng</button></div>
+    </form>
+  </details>
+  <p class="selection" id="product-selection" aria-live="polite">Chưa chọn mặt hàng</p>
+  <form id="line-add" class="stack">
+    <div class="grid">
+      <label>Số lượng<input name="quantity" type="number" min="1" max="1000000" required></label>
+      <label>Đơn giá nhập (đ)<input name="unitPrice" inputmode="numeric" pattern="[1-9][0-9]{0,14}" required></label>
+    </div>
+    <div><button>Thêm dòng</button></div>
+  </form>
+</section>
+</div>
+<section class="card receipt">
+  <h2>3. Kiểm tra và lưu phiếu</h2>
+  <div class="scroll"><table><thead><tr><th>Mã SKU</th><th>Mặt hàng</th><th class="num">Số lượng</th><th class="num">Đơn giá</th><th class="num">Thành tiền</th><th>Thao tác</th></tr></thead><tbody id="lines"></tbody></table></div>
+  <p class="total">Tổng cộng <strong id="total">0 đ</strong></p>
+  <div class="actions"><button id="save">Lưu phiếu nhập</button><a class="button secondary" href="/">Hủy phiếu</a></div>
+</section>
+</main>
+</body></html>

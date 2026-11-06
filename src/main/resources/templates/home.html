@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>QLST Điện máy</title><link rel="stylesheet" href="/assets/shop.css"></head>
+<body>
+<header><div class="bar"><a href="/">QLST Điện máy</a><span>Đề 07 · Bản thực hành</span></div></header>
+<main class="narrow">
+<section class="card" th:if="${user == null}">
+  <p class="eyebrow">Quản lý siêu thị điện máy</p><h1>Đăng nhập</h1>
+  <p>Đăng nhập bằng tài khoản khách hàng hoặc nhân viên kho.</p>
+  <p class="message bad" role="alert" th:if="${error}" th:text="${error}"></p>
+  <form method="post" action="/login" class="stack">
+    <input type="hidden" name="csrf" th:value="${session.csrf}">
+    <label>Tên đăng nhập<input name="username" required maxlength="50" autocomplete="username"></label>
+    <label>Mật khẩu<input name="password" type="password" required maxlength="128" autocomplete="current-password"></label>
+    <div><button>Đăng nhập</button></div>
+  </form>
+</section>
+<section class="card" th:if="${user != null}">
+  <p class="eyebrow" th:text="${user.role().name() == 'CUSTOMER' ? 'Khách hàng' : 'Nhân viên kho'}"></p>
+  <h1 th:text="|Xin chào, ${user.username()}|"></h1>
+  <p>Chọn nghiệp vụ để bắt đầu.</p>
+  <div class="actions">
+    <a class="button" th:if="${user.role().name() == 'CUSTOMER'}" href="/member">Đăng kí thành viên</a>
+    <a class="button" th:if="${user.role().name() == 'WAREHOUSE'}" href="/warehouse">Nhập hàng từ nhà cung cấp</a>
+    <form method="post" action="/logout"><input type="hidden" name="csrf" th:value="${session.csrf}"><button class="secondary">Đăng xuất</button></form>
+  </div>
+</section>
+</main>
+</body></html>
