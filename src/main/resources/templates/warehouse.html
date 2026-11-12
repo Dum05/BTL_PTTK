@@ -6,15 +6,17 @@
 <body>
 <header><div class="bar"><a href="/">QLST Điện máy</a><span>Khu vực nhân viên kho</span></div></header>
 <main id="warehouse" th:data-csrf="${session.csrf}" th:data-key="${requestKey}">
-<a class="back" href="/">← Trang chủ</a>
 <p class="eyebrow">Module 2</p><h1>Nhập hàng từ nhà cung cấp</h1>
 <p class="message bad" id="error" role="alert" hidden></p>
+<p class="message" id="saving-status" role="status" hidden>Đang lưu phiếu. Vui lòng chờ kết quả.</p>
+<div id="draft-editor">
+<a class="back" href="/">← Trang chủ</a>
 <div class="grid">
 <section class="card">
   <h2>1. Chọn nhà cung cấp</h2>
   <form class="inline" id="supplier-search"><label>Tìm theo tên<input name="name" maxlength="140" required></label><button>Tìm</button></form>
   <div id="supplier-results" class="results" aria-live="polite"></div>
-  <details><summary>Thêm nhà cung cấp mới</summary>
+  <details id="supplier-create" hidden><summary>Thêm nhà cung cấp mới</summary>
     <form class="stack" id="supplier-add">
       <label>Tên nhà cung cấp<input name="name" maxlength="140" required></label>
       <label>Số điện thoại<input name="phone" pattern="0[0-9]{9}" required></label>
@@ -28,7 +30,7 @@
   <h2>2. Chọn mặt hàng</h2>
   <form class="inline" id="product-search"><label>Tìm theo tên<input name="name" maxlength="140" required></label><button>Tìm</button></form>
   <div id="product-results" class="results" aria-live="polite"></div>
-  <details><summary>Thêm mặt hàng mới</summary>
+  <details id="product-create" hidden><summary>Thêm mặt hàng mới</summary>
     <form class="stack" id="product-add">
       <label>Mã SKU<input name="sku" maxlength="30" required></label>
       <label>Tên mặt hàng<input name="name" maxlength="140" required></label>
@@ -51,5 +53,6 @@
   <p class="total">Tổng cộng <strong id="total">0 đ</strong></p>
   <div class="actions"><button id="save">Lưu phiếu nhập</button><a class="button secondary" href="/">Hủy phiếu</a></div>
 </section>
+</div>
 </main>
 </body></html>

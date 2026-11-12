@@ -9,12 +9,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-import vn.edu.ptit.qlst.model.Models.Role;
-import vn.edu.ptit.qlst.service.AuthService;
-import vn.edu.ptit.qlst.service.AuthService.Principal;
-import vn.edu.ptit.qlst.service.BusinessException;
-import vn.edu.ptit.qlst.service.MemberService;
-import vn.edu.ptit.qlst.service.ReceiptService;
+import vn.edu.ptit.qlst.model.Models4.Role4;
+import vn.edu.ptit.qlst.service.AuthService4;
+import vn.edu.ptit.qlst.service.AuthService4.Principal4;
+import vn.edu.ptit.qlst.service.BusinessException4;
+import vn.edu.ptit.qlst.service.MemberService4;
+import vn.edu.ptit.qlst.service.ReceiptService4;
 
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -22,19 +22,19 @@ import java.util.Map;
 import java.util.UUID;
 
 @Controller
-public class ShopController {
-    private final AuthService auth;
-    private final MemberService members;
-    private final ReceiptService receipts;
+public class ShopController4 {
+    private final AuthService4 auth;
+    private final MemberService4 members;
+    private final ReceiptService4 receipts;
 
-    public ShopController(AuthService auth, MemberService members, ReceiptService receipts) {
+    public ShopController4(AuthService4 auth, MemberService4 members, ReceiptService4 receipts) {
         this.auth = auth;
         this.members = members;
         this.receipts = receipts;
     }
 
     @GetMapping("/")
-    public String home(Model model, @SessionAttribute(name = "user", required = false) Principal user) {
+    public String home(Model model, @SessionAttribute(name = "user", required = false) Principal4 user) {
         model.addAttribute("user", user);
         return "home";
     }
@@ -59,18 +59,18 @@ public class ShopController {
     }
 
     @GetMapping("/member")
-    public String member(@SessionAttribute("user") Principal user, Model model) {
+    public String member(@SessionAttribute("user") Principal4 user, Model model) {
         model.addAttribute("profile", members.profile(user.id()).orElse(null));
         return "member";
     }
 
     @PostMapping("/member")
-    public String register(@SessionAttribute("user") Principal user, @RequestParam Map<String, String> form, Model model) {
+    public String register(@SessionAttribute("user") Principal4 user, @RequestParam Map<String, String> form, Model model) {
         try {
             members.register(user.id(), form.get("fullName"), form.getOrDefault("birthDate", ""),
                     form.get("phone"), form.get("email"), form.get("address"));
             return "redirect:/member";
-        } catch (BusinessException ex) {
+        } catch (BusinessException4 ex) {
             model.addAttribute("error", ex.getMessage());
         } catch (DataAccessException ex) {
             model.addAttribute("error", "Chưa lưu được hồ sơ. Vui lòng thử lại.");
@@ -111,7 +111,7 @@ public class ShopController {
 
     @PostMapping("/warehouse/receipts")
     @ResponseBody
-    public Map<String, String> receive(@SessionAttribute("user") Principal user, @RequestParam long supplierId,
+    public Map<String, String> receive(@SessionAttribute("user") Principal4 user, @RequestParam long supplierId,
                                       @RequestParam UUID requestKey, @RequestParam List<String> productId,
                                       @RequestParam List<String> quantity, @RequestParam List<String> unitPrice) {
         long id = receipts.receive(user.id(), supplierId, requestKey, productId, quantity, unitPrice);
@@ -119,7 +119,7 @@ public class ShopController {
     }
 
     @GetMapping("/warehouse/invoices/{id}")
-    public String invoice(@SessionAttribute("user") Principal user, @PathVariable long id, Model model) {
+    public String invoice(@SessionAttribute("user") Principal4 user, @PathVariable long id, Model model) {
         var invoice = receipts.invoice(id, user.id())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         model.addAttribute("invoice", invoice);
@@ -127,9 +127,9 @@ public class ShopController {
         return "invoice";
     }
 
-    @ExceptionHandler(BusinessException.class)
+    @ExceptionHandler(BusinessException4.class)
     @ResponseBody
-    public ResponseEntity<Map<String, String>> invalid(BusinessException ex) {
+    public ResponseEntity<Map<String, String>> invalid(BusinessException4 ex) {
         return ResponseEntity.badRequest().body(Map.of("error", ex.getMessage()));
     }
 

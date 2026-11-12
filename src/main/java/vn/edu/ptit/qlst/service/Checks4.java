@@ -2,13 +2,13 @@ package vn.edu.ptit.qlst.service;
 
 import java.util.Locale;
 
-final class Checks {
-    private Checks() {}
+final class Checks4 {
+    private Checks4() {}
 
     static String text(String value, int max, String field) {
         String cleaned = value == null ? "" : value.strip().replaceAll("\\s+", " ");
         if (cleaned.isEmpty() || cleaned.length() > max || cleaned.chars().anyMatch(Character::isISOControl)) {
-            throw new BusinessException(field + " phải có từ 1 đến " + max + " ký tự hợp lệ.");
+            throw new BusinessException4(field + " phải có từ 1 đến " + max + " ký tự hợp lệ.");
         }
         return cleaned;
     }
@@ -16,7 +16,7 @@ final class Checks {
     static String phone(String value) {
         String number = value == null ? "" : value.strip();
         if (!number.matches("0[0-9]{9}")) {
-            throw new BusinessException("Số điện thoại phải có 10 chữ số và bắt đầu bằng 0.");
+            throw new BusinessException4("Số điện thoại phải có 10 chữ số và bắt đầu bằng 0.");
         }
         return number;
     }

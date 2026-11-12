@@ -7,14 +7,14 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-import vn.edu.ptit.qlst.model.Models.Role;
-import vn.edu.ptit.qlst.service.AuthService.Principal;
+import vn.edu.ptit.qlst.model.Models4.Role4;
+import vn.edu.ptit.qlst.service.AuthService4.Principal4;
 
 import java.io.IOException;
 import java.util.UUID;
 
 @Component
-public class SessionFilter extends OncePerRequestFilter {
+public class SessionFilter4 extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws ServletException, IOException {
@@ -29,9 +29,9 @@ public class SessionFilter extends OncePerRequestFilter {
             csrf = UUID.randomUUID().toString();
             session.setAttribute("csrf", csrf);
         }
-        Principal principal = (Principal) session.getAttribute("user");
-        Role required = path.startsWith("/member") ? Role.CUSTOMER
-                : path.startsWith("/warehouse") ? Role.WAREHOUSE : null;
+        Principal4 principal = (Principal4) session.getAttribute("user");
+        Role4 required = path.startsWith("/member") ? Role4.CUSTOMER
+                : path.startsWith("/warehouse") ? Role4.WAREHOUSE : null;
         response.setHeader("Cache-Control", "no-store");
         if (required != null && principal == null) {
             response.sendRedirect("/");
